@@ -1,2 +1,4 @@
 .idea/*
-*.pyc
+.tests_mario/*
+*.py
+.env
