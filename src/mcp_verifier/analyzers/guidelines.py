@@ -11,32 +11,44 @@ logger = logging.getLogger(__name__)
 
 GUIDELINES_PROMPT = """Analyze this MCP server implementation for compliance with community guidelines:
 
-Key Guidelines:
-1. Error Handling
-   - Proper error messages
-   - Error status codes
-   - Error propagation
+### Key Guidelines:
 
-2. Rate Limiting
-   - Request rate limits
-   - Resource usage limits
-   - Concurrent connection limits
+1. **Error Handling**
+   - Ensure proper error messages are provided.
+   - Validate that error status codes are correctly set (e.g., 4xx, 5xx).
+   - Confirm that errors are propagated correctly throughout the code (e.g., raised exceptions, return values).
+   - **Check**: Does the error handling logic cover all edge cases? Are there missing checks that could lead to unhandled exceptions?
 
-3. Response Format
-   - Standard MCP response structure
-   - Proper content types
-   - Valid JSON schemas
+2. **Rate Limiting**
+   - Ensure request rate limits are enforced.
+   - Check that resource usage (e.g., CPU, memory) is accounted for when imposing rate limits.
+   - Verify that concurrent connections are properly limited.
+   - **Check**: Are there places where rate-limiting logic might fail under high load or concurrent requests?
 
-4. Resource Management
-   - Memory management
-   - File handle cleanup
-   - Connection pooling
-   - Timeout handling
+3. **Response Format**
+   - Confirm that the response follows the standard MCP format (if applicable).
+   - Validate content types (e.g., `application/json`, `application/xml`) are properly set.
+   - Ensure that the response data is structured correctly and matches the expected schema.
+   - **Check**: Are there inconsistencies in the response data structure? Are there potential edge cases where the format could break?
 
-5. Documentation
-   - API documentation
-   - Usage examples
-   - Error documentation
+4. **Resource Management**
+   - Ensure proper memory management (e.g., object cleanup, memory leaks).
+   - Verify that file handles and network connections are closed after use.
+   - Confirm that connection pooling (if applicable) is implemented correctly.
+   - Check for appropriate timeout handling in network operations.
+   - **Check**: Are there resource leaks, like open file handles or unused connections? Is there any potential inefficiency in resource usage?
+
+5. **Documentation**
+   - Ensure that API documentation is complete and accurate.
+   - Include usage examples for key methods and endpoints.
+   - Ensure that error conditions and their handling are well-documented.
+   - **Check**: Is the documentation up to date with the code changes? Are there gaps in the explanation of complex logic?
+
+### For each violation, provide:
+- **Rule Violated**: (which specific guideline rule was violated)
+- **Description**: (detailed explanation of the violation)
+- **Impact**: (effect on server operation, stability, security, or performance)
+- **Recommendation**: (suggested improvements to align with best practices)
 
 For each violation, provide:
 - Rule: (guideline rule violated)
