@@ -9,22 +9,41 @@ from src.mcp_verifier.core.models import VerificationState, SecurityIssue
 
 logger = logging.getLogger(__name__)
 
-SECURITY_PROMPT = """Analyze this MCP server code for security issues. Focus on:
+SECURITY_PROMPT = """
+### Security Analysis for MCP Server Code
 
-1. Command injection vulnerabilities
-2. Unsafe file operations
-3. Insecure dependencies
-4. Network security risks
-5. Resource abuse potential (CPU, memory, disk)
-6. Input validation
-7. Authentication and authorization
-8. Secrets handling
+Analyze the provided MCP server code for potential security issues, focusing on the following aspects:
 
-Format each issue as:
-- Severity: (high/medium/low)
-- Description: (detailed explanation)
-- Location: (file and line number)
-- Recommendation: (how to fix)
+1. **Command Injection Vulnerabilities**  
+   - Check if any external commands or system calls are executed using user input without proper sanitization or validation.
+
+2. **Unsafe File Operations**  
+   - Identify any file handling (read/write/delete) operations that might be vulnerable to directory traversal or allow arbitrary file access/modification.
+
+3. **Insecure Dependencies**  
+   - Review imported libraries or external dependencies for known vulnerabilities (e.g., outdated versions, unpatched libraries).
+
+4. **Network Security Risks**  
+   - Ensure that network communication (e.g., HTTP requests, sockets) uses secure protocols and is resistant to attacks like man-in-the-middle (MITM) or data leakage.
+
+5. **Resource Abuse Potential (CPU, Memory, Disk)**  
+   - Assess if the code can be exploited to consume excessive resources, leading to Denial-of-Service (DoS) or resource exhaustion attacks.
+
+6. **Input Validation**  
+   - Ensure that user input, especially from untrusted sources, is properly sanitized, validated, and encoded before processing to prevent injection attacks or unexpected behavior.
+
+7. **Authentication and Authorization**  
+   - Review mechanisms for authenticating users and authorizing actions. Ensure there are no flaws that could allow unauthorized access to sensitive resources.
+
+8. **Secrets Handling**  
+   - Verify that sensitive information (e.g., API keys, passwords, tokens) is stored and transmitted securely (e.g., no hardcoded secrets, proper encryption).
+
+For each security issue found, provide:
+
+- **Severity**: (High/Medium/Low) — Based on potential impact and exploitability.
+- **Description**: (Detailed explanation) — Clear description of the security risk and its implications.
+- **Location**: (File and line number) — Where the issue is located in the code.
+- **Recommendation**: (How to fix) — Suggested mitigation steps to resolve the issue.
 
 Code to analyze:
 {code}
